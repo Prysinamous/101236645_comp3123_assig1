@@ -13,20 +13,22 @@ app.get('/',(req,res) =>
 
 app.get('/user',(req,res) =>
 {
-
-        const uid = req.query['uid'];
         let userFound= true;
         let JSONusers= fs.readFileSync("./users.json")
         let users= JSON.parse(JSONusers)
 
-        for(let i=0; i< users.length; i++)
-        {
-            if(users[i].id == uid)
-            {
-                userFound=true
-                res.json(users[i])
-            }
+        let emptyUser = users.find(e => e.id == req.query.uid)
+
+        let newUser = {
+            id: emptyUser.id,
+            name: emptyUser.name,
+            email: emptyUser.email,
+            address: emptyUser.address.city,
+            phone: emptyUser.phone
         }
+
+    res.send(newUser)
+
 
         if(userFound==false)
         {
